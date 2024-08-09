@@ -1,6 +1,24 @@
-#!/bin/sh
-export LANG=ru_RU.UTF-8
-if command -v box64 >/dev/null; then
+#!/data/data/com.termux/files/usr/bin/sh
+
+arch() {
+    local arch
+    # use package manager, because uname is overriden in BOX64_BASH
+    if command -v dpkg >/dev/null; then
+        arch="$(dpkg --print-architecture)"
+    elif command -v pacman >/dev/null; then
+        # trimmed whitespace with xargs
+        arch="$(grep Architecture $PREFIX/etc/pacman.conf | cut -d = -f 2 | xargs)"
+    else
+        # i ran out of ideas
+        arch="aarch64"
+    fi
+    echo "$arch"
+}
+
+# i set this variable to tell wine to use cp1251
+#export LANG=ru_RU.UTF-8
+
+if [ "$(arch)" = "aarch64" ]; then
     BOX64_NOBANNER=1 BOX64_LD_LIBRARY_PATH=~/box64/x64lib BOX64_RCFILE=~/box64/system/box64.box64rc exec ~/box64/build/box64 "$HOME/wine/bin/$(basename "$0")" "$@"
 else
     BOX86_NOBANNER=1 BOX86_LD_LIBRARY_PATH=~/box86/x86lib BOX86_RCFILE=~/box86/system/box86.box86rc WINEPREFIX=~/.wine32 exec ~/box86/build/box86 "$HOME/wine32/bin/$(basename "$0")" "$@"
