@@ -23,6 +23,10 @@ done
 ### ensure we are in termux
 [[ -n $TERMUX_VERSION ]] || die "this script should be run only on termux."
 
+### this script can be run in different cwd
+cd "$(dirname "$0")"
+
+### promote termux-pacman
 if [[ $TERMUX_MAIN_PACKAGE_FORMAT != pacman ]]; then
     echo "Hello. Do you want to switch to pacman?"
     echo "It is much faster than apt, and I'd suggest it if you are"
