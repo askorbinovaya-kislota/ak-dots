@@ -1,0 +1,144 @@
+###################
+# variables, common
+###################
+
+export PATH="$PATH:$HOME/.local/bin"
+export EDITOR="$(command -v nano)"
+export DISPLAY=:0
+
+# i hate histfile. when i need it, i dump history manually
+unset HISTFILE
+
+# less history is annoying too
+export LESSHISTFILE=-
+
+###################
+# variables, termux
+###################
+
+# shell prompt
+PROMPT_COMMAND='echo -en "\e]0;termux - $(pwd)\a"'
+PS1="\[\e[30;102m\] \w \[\e[92;49m\]\[\e[0m\] "
+PS2="\[\e[92m\]+\[\e[0m\] "
+
+# special variable to indicate that this terminal has nerdfonts installed,
+# sent over ssh, and used inside my other configs
+export NFONTS="true"
+
+# cargo complains about failing to create hardlink. silence that warning
+export CARGO_INCREMENTAL=0
+
+# quickly reference some common places
+s=/sdcard/Download
+p=$PREFIX
+
+#################
+# variables, gpkg
+#################
+
+# also add glibc prefix to common places
+[[ -n $GLIBC_PREFIX ]] && g=$GLIBC_PREFIX
+
+# enable fps counters for dxvk and opengl
+if [[ -n $GLIBC_PREFIX ]]; then
+    export DXVK_HUD=version,api,devinfo,fps,frametimes,gpuload,memory
+    export GALLIUM_HUD=fps
+fi
+
+#######################
+# shell options, common
+#######################
+
+# enables **.ext
+shopt -s globstar
+
+#################
+# aliases, common
+#################
+
+# shorthands
+alias c="clear"
+alias cd..="cd .."
+alias ms="miniserve"
+
+# stop neofetch from creating config file
+alias neofetch="neofetch --no_config"
+
+# stop ping from running forever
+alias ping="ping -c 4"
+
+# always print human-readable sizes
+alias du="du -sh"
+alias df="df -h"
+
+# enable color for diff & grep
+alias grep="grep --color=auto"
+alias diff="diff --color=auto"
+
+# be verbose (VERY helpful)
+alias cp="cp -v"
+alias mv="mv -v"
+alias mkdir="mkdir -v"
+alias rm="rm -v"
+alias rmdir="rmdir -v"
+
+# typos
+alias sl="ls"
+alias s="ls"
+alias ld="ls"
+alias cx="cd"
+
+# ls -> eza
+if command -v eza >/dev/null; then
+    # when eza is installed:
+    alias ls="eza"
+    alias la="ls -a"
+    alias ll="l -a"
+    alias l="ls -lhgoM"
+    # BTW, eza has totally messed icons, i miss exa :(
+else
+    # otherwise add default `ls` aliases
+    alias la="ls -a"
+    alias ll="ls -alh"
+    alias l="ls -lh"
+fi
+
+# polyfills
+command -v which >/dev/null || alias which="type -P"
+command -v rg >/dev/null || alias rg="grep -R"
+
+#################
+# aliases, termux
+#################
+
+# shorthands
+alias tp="termux-open"
+alias sd="cd $s"
+alias gr="exec grun --shell"
+
+###############
+# aliases, gpkg
+###############
+
+# «services» (i start those by opening a new tab)
+alias tx="exec termux-x11"
+alias pa="exec pulseaudio --exit-idle-time=-1 --load=module-native-protocol-tcp"
+
+###################
+# functions, termux
+###################
+
+# allows to use some pm commands without root, examples:
+# pm list package
+# pm path com.termux
+pm() {
+    /system/bin/pm "$@" 2>&1 </dev/null | cat
+}
+
+# temp: dumps all temperature values from /sys, aka lm_sensors on android
+temp() {
+    local i
+    for i in /sys/class/thermal/thermal_zone*; do
+        echo "$(<$i/type): $(<$i/temp)"
+    done
+}
