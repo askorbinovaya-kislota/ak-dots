@@ -125,7 +125,7 @@ alias gr="exec grun --shell"
 
 # «services» (i start those by opening a new tab)
 alias tx="exec termux-x11"
-alias pa="exec pulseaudio --exit-idle-time=-1 --load=module-native-protocol-tcp"
+alias pa="exec pulseaudio --exit-idle-time=-1"
 
 ###################
 # functions, termux
