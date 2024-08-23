@@ -28,6 +28,9 @@ export NFONTS="true"
 # cargo complains about failing to create hardlink. silence that warning
 export CARGO_INCREMENTAL=0
 
+# pulseaudio socket does not work when XDG_R_D is not set
+export XDG_RUNTIME_DIR="$TMPDIR"
+
 # quickly reference some common places
 s=/sdcard/Download
 p=$PREFIX
