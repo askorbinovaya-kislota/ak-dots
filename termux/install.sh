@@ -65,10 +65,9 @@ fi
 echo
 
 ### additional packages
-pkgs="eza htop neofetch miniserve"
+pkgs="bash-completion eza htop neofetch miniserve"
 echo "Would you like to install additional packages used in these dotfiles?"
-echo "Those are not hard dependency, are tiny and useful, and i'd suggest to"
-echo "install at least eza."
+echo "Those are not hard dependency, but are referenced in these dotfiles."
 echo
 echo "Package list: $pkgs"
 echo
