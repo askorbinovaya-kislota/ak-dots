@@ -56,7 +56,7 @@ cp -v htoprc ~/.config/htop/
 mkdir -pv ~/.termux
 cp -v dark-tea.properties ~/.termux/colors.properties
 cp -v mononoki-nerd.ttf ~/.termux/font.ttf
-cp -v $PREFIX/etc/motd.sh ~/.termux/motd.sh
+ln -sf $PREFIX/etc/motd.sh ~/.termux/motd.sh
 cp -v termux.properties ~/.termux/termux.properties
 if [[ $wine = true ]]; then
     mkdir -pv ~/.local/bin
