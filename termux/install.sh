@@ -57,12 +57,7 @@ mkdir -pv ~/.termux
 cp -v dark-tea.properties ~/.termux/colors.properties
 cp -v mononoki-nerd.ttf ~/.termux/font.ttf
 cp -v $PREFIX/etc/motd.sh ~/.termux/motd.sh
-if [[ $(getprop ro.product.brand) = Infinix ]]; then
-    cp -v termux-infinix.properties ~/.termux/termux.properties
-else
-    cp -v termux.properties ~/.termux/termux.properties
-fi
-
+cp -v termux.properties ~/.termux/termux.properties
 if [[ $wine = true ]]; then
     mkdir -pv ~/.local/bin
     cp -av winebin/* ~/.local/bin
