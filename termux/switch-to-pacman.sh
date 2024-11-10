@@ -51,7 +51,6 @@ echo "however, your home directory is kept intact"
 echo "contents of your old usr will be saved in usr.bak"
 echo -n "continue? [Y/n] "
 confirm || exit
-echo
 
 ### step 1: getting the url
 REPO="termux-pacman/termux-packages"
@@ -64,6 +63,7 @@ mkdir "usr-n"
 cd "usr-n"
 
 ### step 2: downloading
+echo
 echo "Downloading latest termux-pacman bootstrap..."
 curl -L -o "$BOOTSTRAP" "$URL"
 
@@ -96,8 +96,8 @@ echo -n "Destroy usr.bak? [Y/n] "
 if confirm; then
     rm -rf "usr.bak"
 fi
-echo
 
+echo
 echo -n "You should restart termux now. Close all sessions? [Y/n] "
 if confirm; then
     /data/data/com.termux/files/usr/bin/am \

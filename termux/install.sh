@@ -27,14 +27,14 @@ done
 cd "$(dirname "$0")"
 
 ### promote termux-pacman
-if [[ $TERMUX_MAIN_PACKAGE_FORMAT != pacman ]]; then
+if ! command -v pacman >/dev/null; then
     echo "Hello. Do you want to switch to pacman?"
-    echo "It is much faster than apt, and I'd suggest it if you are"
-    echo "more familiar with archlinux than with debian."
+    echo "It is much faster than apt, and has the same termux repos."
     echo -n "Install termux-pacman now? [Y/n] "
     if confirm; then
         echo
         exec ./switch-to-pacman.sh
+        die "could not exec"
     fi
     echo
 fi
@@ -62,10 +62,12 @@ if [[ $wine = true ]]; then
     mkdir -pv ~/.local/bin
     cp -av winebin/* ~/.local/bin
 fi
-echo
+
+termux-reload-settings
 
 ### additional packages
 pkgs="bash-completion eza htop neofetch miniserve"
+echo
 echo "Would you like to install additional packages used in these dotfiles?"
 echo "Those are not hard dependency, but are referenced in these dotfiles."
 echo
