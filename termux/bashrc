@@ -34,13 +34,11 @@ export XDG_RUNTIME_DIR="$TMPDIR"
 # quickly reference some common places
 s=/sdcard/Download
 p=$PREFIX
+g=$PREFIX/glibc
 
 #################
 # variables, gpkg
 #################
-
-# also add glibc prefix to common places
-[[ -n $GLIBC_PREFIX ]] && g=$GLIBC_PREFIX
 
 # enable fps counters for dxvk and opengl
 if [[ -n $GLIBC_PREFIX ]]; then
@@ -54,6 +52,9 @@ fi
 
 # enables **.ext
 shopt -s globstar
+
+# corrects misspelled paths for cd
+shopt -s cdspell
 
 #################
 # aliases, common
@@ -118,10 +119,6 @@ command -v rg >/dev/null || alias rg="grep -R"
 alias tp="termux-open"
 alias sd="cd $s"
 alias gr="exec grun --shell"
-
-###############
-# aliases, gpkg
-###############
 
 # «services» (i start those by opening a new tab)
 alias tx="exec termux-x11"
