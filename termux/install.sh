@@ -2,21 +2,32 @@
 set -e
 
 die() {
-    echo "$*"
+    echo "$@"
     exit 1
 }
 
 confirm() {
+    if [[ $quiet = true ]]; then
+        return 0
+    fi
+
     local answer
     read answer
     [[ $answer =~ ^[Yy] ]] || [[ -z $answer ]]
 }
 
+print() {
+    if [[ $quiet != true ]]; then
+        echo "$@"
+    fi
+}
+
 ### parsing args
 for arg in "$@"; do
     case $arg in
-        --wine) wine=true;;
-        *) die "Usage: ./install.sh [--wine]";;
+        --wine) wine=true;; # adds wine wrappers to .local/bin
+        -q|--quiet) quiet=true;; # non-interactive mode
+        *) die "Usage: ./install.sh [-q] [--wine]";;
     esac
 done
 
@@ -27,25 +38,25 @@ done
 cd "$(dirname "$0")"
 
 ### promote termux-pacman
-if ! command -v pacman >/dev/null; then
-    echo "Hello. Do you want to switch to pacman?"
-    echo "It is much faster than apt, and has the same termux repos."
-    echo -n "Install termux-pacman now? [Y/n] "
+if [[ $quiet != true ]] && ! command -v pacman >/dev/null; then
+    print
+    print "Hello. Do you want to switch to pacman?"
+    print "It is much faster than apt, and has the same termux repos."
+    print -n "Install termux-pacman now? [Y/n] "
     if confirm; then
-        echo
         exec ./switch-to-pacman.sh
-        die "could not exec"
     fi
-    echo
+    print
 fi
 
 ### the warning
-echo "This installer is going to !overwrite! your dotfiles,"
-echo "so please make backups if you have something important."
-echo "To check what is being overwritten, please examine this script."
-echo -n "Continue? [Y/n] "
+print
+print "This installer is going to !overwrite! your dotfiles,"
+print "so please make backups if you have something important."
+print "To check what is being overwritten, please examine this script."
+print -n "Continue? [Y/n] "
 confirm || exit
-echo
+print
 
 ### installation
 cp -v bashrc ~/.bashrc
@@ -67,16 +78,16 @@ termux-reload-settings
 
 ### additional packages
 pkgs="bash-completion eza htop neofetch miniserve"
-echo
-echo "Would you like to install additional packages used in these dotfiles?"
-echo "Those are not hard dependency, but are referenced in these dotfiles."
-echo
-echo "Package list: $pkgs"
-echo
-echo -n "Continue with installation? [Y/n] "
+print
+print "Would you like to install additional packages used in these dotfiles?"
+print "Those are not hard dependency, but are referenced in these dotfiles."
+print
+print "Package list: $pkgs"
+print
+print -n "Continue with installation? [Y/n] "
 if confirm; then
     pkg in $pkgs
 fi
-echo
+print
 
 echo "All done. Please restart termux to reload settings."
