@@ -12,6 +12,23 @@ unset HISTFILE
 # less history is annoying too
 export LESSHISTFILE=-
 
+# colorful manpages
+export LESS_TERMCAP_mb=$'\e[91m'
+export LESS_TERMCAP_md=$'\e[92m'
+export LESS_TERMCAP_so=$'\e[93m'
+export LESS_TERMCAP_us=$'\e[97m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export GROFF_NO_SGR=1
+
+# as you may have guessed... disables python histfile!
+export PYTHONSTARTUP="$HOME/.config/python/startup.py"
+
+# bat settings
+export BAT_STYLE=plain
+export BAT_THEME=ansi
+
 ###################
 # variables, termux
 ###################
@@ -56,6 +73,9 @@ shopt -s globstar
 # corrects misspelled paths for cd
 shopt -s cdspell
 
+# allows to verify commands searched with !
+shopt -s histverify
+
 #################
 # aliases, common
 #################
@@ -65,8 +85,9 @@ alias c="clear"
 alias cd..="cd .."
 alias ms="miniserve"
 
-# stop neofetch from creating config file
-alias neofetch="neofetch --no_config"
+# stop wget from creating .wget-hsts file
+# don't forget to unalias that for busybox wget!
+alias wget="wget --hsts-file /dev/null"
 
 # stop ping from running forever
 alias ping="ping -c 4"
@@ -79,7 +100,7 @@ alias df="df -h"
 alias grep="grep --color=auto"
 alias diff="diff --color=auto"
 
-# be verbose (VERY helpful)
+# be verbose
 alias cp="cp -v"
 alias mv="mv -v"
 alias mkdir="mkdir -v"
@@ -110,6 +131,8 @@ fi
 # polyfills
 command -v which >/dev/null || alias which="type -P"
 command -v rg >/dev/null || alias rg="grep -R"
+alias neofetch="fastfetch"
+#alias vi="nano"
 
 #################
 # aliases, termux
@@ -118,11 +141,66 @@ command -v rg >/dev/null || alias rg="grep -R"
 # shorthands
 alias tp="termux-open"
 alias sd="cd $s"
+alias sd..="cd $s/.."
 alias gr="exec grun --shell"
 
 # «services» (i start those by opening a new tab)
 alias tx="exec termux-x11"
 alias pa="exec pulseaudio --exit-idle-time=-1"
+
+###################
+# functions, common
+###################
+
+# hexdump to less
+hxl() {
+    xxd -g1 -R always "$@" | less -R
+}
+
+randint() {
+    case $# in
+        0) echo $RANDOM;;
+        1) echo $(( RANDOM % $1 ));;
+        2) echo $(( $2 + RANDOM % $1 ));;
+        *) echo "Usage: randint [stop] [start]";;
+    esac
+}
+
+help() {
+    case $# in
+        1) "$1" --help 2>&1 | command bat --language help --paging never;;
+        2) "$@" 2>&1 | command bat --language help --paging never;;
+        *) echo "Usage: help <cmd>";;
+    esac
+}
+
+# bat sucks sooo much. it has a shitton of useless features, yet when we need
+# previewing binary files (#800) devs answer "I'd rather not implement this.
+# It's easy to write a wrapper script that would do this."
+# so it just gives you a useless <BINARY> and thats it
+# at this point, i'd better write my own terminal code highlighter...
+bat() {
+    # so here, if we invoke bat simply with 1 argument that is a file,
+    # we check its encoding and invoke hxl instead if it was binary
+    # ofc it doesn't support piping, but thats not critical (as i never pipe to bat)
+    if [[ $# = 1 ]] &&
+       [[ ! $1 = -* ]] &&
+       [[ -r $1 ]] &&
+       [[ "$(file --mime-encoding "$1")" = *binary ]]; then
+        hxl "$1"
+    else
+        command bat "$@"
+    fi
+}
+
+git() {
+    case "$1" in
+    clone) gix "$@";;
+    # git diff has scrolling with mouse/touch disabled, so i piped it into bat...
+    diff) command git "$@" | command bat --language diff;;
+    *) command git "$@";;
+    esac
+}
 
 ###################
 # functions, termux
@@ -133,12 +211,4 @@ alias pa="exec pulseaudio --exit-idle-time=-1"
 # pm path com.termux
 pm() {
     /system/bin/pm "$@" 2>&1 </dev/null | cat
-}
-
-# temp: dumps all temperature values from /sys, aka lm_sensors on android
-temp() {
-    local i
-    for i in /sys/class/thermal/thermal_zone*; do
-        echo "$(<$i/type): $(<$i/temp)"
-    done
 }

@@ -1,0 +1,27 @@
+#!/data/data/com.termux/files/usr/bin/python3
+# py - python expression evaluator
+# example:
+# py 1 + 2
+# py 'hex(123)'
+# py 0x15F
+
+import ast;
+import sys;
+
+# https://stackoverflow.com/a/76636602
+def exec_with_return(code):
+    a = ast.parse(code);
+    last_expression = None;
+    if a.body:
+        a_last = a.body[-1];
+        if isinstance(a_last, ast.Expr):
+            last_expression = ast.unparse(a.body.pop());
+        elif isinstance(a_last, ast.Assign):
+            last_expression = ast.unparse(a_last.targets[0]);
+        elif isinstance(a_last, (ast.AnnAssign, ast.AugAssign)):
+            last_expression = ast.unparse(a_last.target);
+    exec(ast.unparse(a));
+    if last_expression:
+        return eval(last_expression);
+
+print(exec_with_return(" ".join(sys.argv[1:])));

@@ -63,21 +63,28 @@ cp -v bashrc ~/.bashrc
 
 mkdir -pv ~/.config/htop
 cp -v htoprc ~/.config/htop/
+mkdir -pv ~/.config/fastfetch
+cp -v fastfetch.jsonc ~/.config/fastfetch/config.jsonc
+mkdir -pv ~/.config/python
+cp -v startup.py ~/.config/python/startup.py
 
 mkdir -pv ~/.termux
-cp -v dark-tea.properties ~/.termux/colors.properties
+cp -v dark-tea-lighter.properties ~/.termux/colors.properties
 cp -v mononoki-nerd.ttf ~/.termux/font.ttf
 ln -sf $PREFIX/etc/motd.sh ~/.termux/motd.sh
 cp -v termux.properties ~/.termux/termux.properties
+
+mkdir -pv ~/.local/bin
+cp -v py ~/.local/bin/py
+
 if [[ $wine = true ]]; then
-    mkdir -pv ~/.local/bin
     cp -av winebin/* ~/.local/bin
 fi
 
 termux-reload-settings
 
 ### additional packages
-pkgs="bash-completion eza htop neofetch miniserve"
+pkgs="eza htop fastfetch miniserve xxd bat gitoxide"
 print
 print "Would you like to install additional packages used in these dotfiles?"
 print "Those are not hard dependency, but are referenced in these dotfiles."
