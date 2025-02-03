@@ -16,7 +16,7 @@ export LESSHISTFILE=-
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
 
 # bat settings
-export BAT_STYLE=rule
+export BAT_STYLE=plain
 export BAT_THEME=ansi
 
 ###################
@@ -158,8 +158,8 @@ randint() {
 
 help() {
     case $# in
-        1) "$1" --help 2>&1 | command bat --language help --paging never;;
-        2) "$@" 2>&1 | command bat --language help --paging never;;
+        1) "$1" --help 2>&1 | command bat --language=help --paging=never;;
+        2) "$@" 2>&1 | command bat --language=help --paging=never;;
         *) echo "Usage: help <cmd>";;
     esac
 }
@@ -179,7 +179,7 @@ bat() {
        [[ "$(file --mime-encoding "$1")" = *binary ]]; then
         hxl "$1"
     else
-        command bat "$@"
+        BAT_STYLE=header,grid command bat "$@"
     fi
 }
 
@@ -187,7 +187,7 @@ git() {
     case "$1" in
     clone) gix "$@";;
     # git diff has scrolling with mouse/touch disabled, so i piped it into bat...
-    diff) command git "$@" | command bat --language diff;;
+    diff) command git "$@" | command bat --language=diff;;
     *) command git "$@";;
     esac
 }
