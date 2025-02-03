@@ -16,7 +16,7 @@ export LESSHISTFILE=-
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
 
 # bat settings
-export BAT_STYLE=plain
+export BAT_STYLE=rule
 export BAT_THEME=ansi
 
 ###################
