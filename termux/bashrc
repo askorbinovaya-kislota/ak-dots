@@ -12,16 +12,6 @@ unset HISTFILE
 # less history is annoying too
 export LESSHISTFILE=-
 
-# colorful manpages
-export LESS_TERMCAP_mb=$'\e[91m'
-export LESS_TERMCAP_md=$'\e[92m'
-export LESS_TERMCAP_so=$'\e[93m'
-export LESS_TERMCAP_us=$'\e[97m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export GROFF_NO_SGR=1
-
 # as you may have guessed... disables python histfile!
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
 
@@ -200,6 +190,11 @@ git() {
     diff) command git "$@" | command bat --language diff;;
     *) command git "$@";;
     esac
+}
+
+# pipe it to bat to add magic syntax highlighting™
+man() {
+    command man "$@" | col -b | command bat --language=man -
 }
 
 ###################
