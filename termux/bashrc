@@ -159,9 +159,9 @@ randint() {
 
 help() {
     case $# in
+        0) command help;;
         1) "$1" --help 2>&1 | command bat --language=help --paging=never;;
-        2) "$@" 2>&1 | command bat --language=help --paging=never;;
-        *) echo "Usage: help <cmd>";;
+        *) "$@" 2>&1 | command bat --language=help --paging=never;;
     esac
 }
 
