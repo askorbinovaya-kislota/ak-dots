@@ -187,9 +187,11 @@ bat() {
 
 git() {
     case "$1" in
-    clone) gix "$@";;
+    clone|fetch) gix "$@";;
     # git diff has scrolling with mouse/touch disabled, so i piped it into bat...
     diff) command git "$@" | command bat --language=diff;;
+    # actually almost every git cmd...
+    log) command git "$@" | command bat --language=gitlog;;
     *) command git "$@";;
     esac
 }
