@@ -67,6 +67,8 @@ mkdir -pv ~/.config/fastfetch
 cp -v fastfetch.jsonc ~/.config/fastfetch/config.jsonc
 mkdir -pv ~/.config/python
 cp -v startup.py ~/.config/python/startup.py
+mkdir -pv ~/.config/nano
+cp -v nanorc ~/.config/nano/nanorc
 
 mkdir -pv ~/.termux
 cp -v dark-tea-lighter.properties ~/.termux/colors.properties

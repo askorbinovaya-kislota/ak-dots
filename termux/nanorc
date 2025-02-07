@@ -1,0 +1,25 @@
+set autoindent
+set indicator
+set smarthome
+set softwrap
+set zap
+
+set titlecolor #000,cyan
+set selectedcolor #000,cyan
+set spotlightcolor black,lightyellow
+set statuscolor #000,cyan
+set numbercolor cyan
+set stripecolor ,#444
+set scrollercolor cyan
+set keycolor cyan
+set functioncolor cyan
+
+include "/data/data/com.termux/files/usr/share/nano/*.nanorc"
+
+bind ^Z suspend main
+
+unbind M-J main
+unbind M-T main
+
+bind Sh-M-C "{execute}|termux-clipboard-set{enter}{undo}" main
+bind Sh-M-V "{execute}termux-clipboard-get{enter}" main
