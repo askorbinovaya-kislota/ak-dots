@@ -201,6 +201,15 @@ man() {
     command man "$@" | col -b | command bat --language=man -
 }
 
+# when invoked without arguments, launches interpreter instead
+py() {
+    if [[ $# = 0 ]]; then
+        python
+    else
+        command py "$@"
+    fi
+}
+
 ###################
 # functions, termux
 ###################
