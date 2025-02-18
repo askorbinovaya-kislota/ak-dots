@@ -21,5 +21,6 @@ bind ^Z suspend main
 unbind M-J main
 unbind M-T main
 
+bind Sh-M-X "{execute}|termux-clipboard-set{enter}" main
 bind Sh-M-C "{execute}|termux-clipboard-set{enter}{undo}" main
 bind Sh-M-V "{execute}termux-clipboard-get{enter}" main
