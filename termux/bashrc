@@ -145,7 +145,7 @@ alias pa="exec pulseaudio --exit-idle-time=-1"
 
 # hexdump to less
 hxl() {
-    xxd -g1 -R always "$@" | less -R
+    xxd -g1 -R always "$@" | less -RF
 }
 
 randint() {
@@ -155,6 +155,10 @@ randint() {
         2) echo $(( $2 + RANDOM % $1 ));;
         *) echo "Usage: randint [stop] [start]";;
     esac
+}
+
+hex() {
+    py "hex($@)"
 }
 
 help() {
@@ -201,10 +205,10 @@ man() {
     command man "$@" | col -b | command bat --language=man -
 }
 
-# when invoked without arguments, launches interpreter instead
+# when invoked without arguments or with .py file, launches interpreter instead
 py() {
-    if [[ $# = 0 ]]; then
-        python
+    if [[ $# = 0 ]] || [[ $1 = *.py ]]; then
+        python "$@"
     else
         command py "$@"
     fi
