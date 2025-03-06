@@ -121,7 +121,6 @@ fi
 # polyfills
 command -v which >/dev/null || alias which="type -P"
 command -v rg >/dev/null || alias rg="grep -R"
-alias 7z="7zz"
 alias neofetch="fastfetch"
 #alias vi="nano"
 
