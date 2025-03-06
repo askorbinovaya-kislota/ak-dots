@@ -86,7 +86,7 @@ fi
 termux-reload-settings
 
 ### additional packages
-pkgs="eza htop fastfetch miniserve xxd bat gitoxide"
+pkgs="eza htop fastfetch miniserve xxd bat gitoxide wget file p7zip 7zip"
 print
 print "Would you like to install additional packages used in these dotfiles?"
 print "Those are not hard dependency, but are referenced in these dotfiles."
