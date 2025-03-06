@@ -156,10 +156,6 @@ randint() {
     esac
 }
 
-hex() {
-    py "hex($@)"
-}
-
 help() {
     case $# in
         0) command help;;

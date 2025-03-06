@@ -1,0 +1,4 @@
+#!/usr/bin/python3
+import sys;
+out = [hex(int(i)) for i in sys.argv[1:]];
+print(*out);
