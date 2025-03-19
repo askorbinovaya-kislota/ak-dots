@@ -78,7 +78,6 @@ cp -v termux.properties ~/.termux/termux.properties
 
 mkdir -pv ~/.local/bin
 cp -v py ~/.local/bin/py
-cp -v hex ~/.local/bin/hex
 
 if [[ $wine = true ]]; then
     cp -av winebin/* ~/.local/bin

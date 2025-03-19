@@ -156,6 +156,19 @@ randint() {
     esac
 }
 
+hex() {
+    if [[ $# = 0 ]]; then
+        echo "Usage: hex <numbers...>"
+        return 1
+    fi
+    printf "0x%X" "$1"
+    shift
+    if [[ $# -gt 0 ]]; then
+        printf " 0x%X" "$@"
+    fi
+    printf "\n"
+}
+
 help() {
     case $# in
         0) command help;;
