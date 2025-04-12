@@ -24,9 +24,17 @@ export BAT_THEME=ansi
 ###################
 
 # shell prompt
-PROMPT_COMMAND='echo -en "\e]0;termux - $(pwd)\a"'
-PS1="\[\e[30;102m\] \w \[\e[92;49m\]\[\e[0m\] "
-PS2="\[\e[92m\]+\[\e[0m\] "
+if [[ $UID != 0 ]]; then
+    # user
+    PROMPT_COMMAND='echo -en "\e]0;termux - $(pwd)\a"'
+    PS1="\[\e[30;102m\] \w \[\e[92;49m\]\[\e[0m\] "
+    PS2="\[\e[92m\]+\[\e[0m\] "
+else
+    # root
+    PROMPT_COMMAND='echo -en "\e]0;su - $(pwd)\a"'
+    PS1="\[\e[30;101m\] \w \[\e[91;49m\]\[\e[0m\] "
+    PS2="\[\e[91m\]+\[\e[0m\] "
+fi
 
 # special variable to indicate that this terminal has nerdfonts installed,
 # sent over ssh, and used inside my other configs
@@ -219,6 +227,18 @@ py() {
         python "$@"
     else
         command py "$@"
+    fi
+}
+
+sudo() {
+    su -c "PATH='$PATH'" "HOME='$HOME/.suroot'" "$@"
+}
+
+su() {
+    if [[ $# = 0 ]]; then
+        su -c "$p/bin/login"
+    else
+        command su "$@"
     fi
 }
 
