@@ -221,15 +221,6 @@ man() {
     command man "$@" | col -b | command bat --language=man -
 }
 
-# when invoked without arguments or with .py file, launches interpreter instead
-py() {
-    if [[ $# = 0 ]] || [[ $1 = *.py ]]; then
-        python "$@"
-    else
-        command py "$@"
-    fi
-}
-
 sudo() {
     su -c "PATH='$PATH'" "HOME='$HOME/.suroot'" "$@"
 }

@@ -1,12 +1,9 @@
-#!/data/data/com.termux/files/usr/bin/python3
+#!/usr/bin/python3
 # py - python expression evaluator
-# example:
-# py 1 + 2
-# py 'hex(123)'
-# py 0x15F
 
 import ast;
 import sys;
+import os;
 
 # https://stackoverflow.com/a/76636602
 def exec_with_return(code):
@@ -24,4 +21,10 @@ def exec_with_return(code):
     if last_expression:
         return eval(last_expression);
 
-print(exec_with_return(" ".join(sys.argv[1:])));
+args = sys.argv[1:];
+if len(args) == 0:
+    os.system("python");
+elif args[0].endswith(".py"):
+    os.system("python " + args[0]);
+else:
+    print(exec_with_return(" ".join(args)));
