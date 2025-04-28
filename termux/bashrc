@@ -222,12 +222,12 @@ man() {
 }
 
 sudo() {
-    su -c "PATH='$PATH'" "HOME='$HOME/.suroot'" "$@"
+    su -c "export PATH='$PATH:/debug_ramdisk:/system/bin:/system/xbin';" "export HOME='$HOME/.suroot';" "$@"
 }
 
 su() {
     if [[ $# = 0 ]]; then
-        su -c "$p/bin/login"
+        sudo login
     else
         command su "$@"
     fi
