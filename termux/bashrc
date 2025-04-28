@@ -243,3 +243,19 @@ su() {
 pm() {
     /system/bin/pm "$@" 2>&1 </dev/null | cat
 }
+
+# cds to package's directory, useful to extract apks
+pmcd() {
+    local path="$(pm path "$@")"
+    if [[ -z $path ]]; then
+        echo Package not found
+    else
+        path="${path/package:/}"
+        cd "$(dirname "$path")"
+    fi
+}
+
+# greps pm package
+pmgrep() {
+    pm list package | sed -n "/$1/{s/package://;p}"
+}
