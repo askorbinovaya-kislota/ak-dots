@@ -16,7 +16,7 @@ export LESSHISTFILE=-
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
 
 # bat settings
-export BAT_STYLE=plain
+export BAT_STYLE=header,grid
 export BAT_THEME=ansi
 
 ###################
@@ -180,45 +180,25 @@ hex() {
 help() {
     case $# in
         0) command help;;
-        1) "$1" --help 2>&1 | command bat --language=help --paging=never;;
-        *) "$@" 2>&1 | command bat --language=help --paging=never;;
+        1) "$1" --help 2>&1 | bat --language=help --paging=never --style=plain;;
+        *) "$@" 2>&1 | bat --language=help --paging=never --style=plain;;
     esac
-}
-
-# bat sucks sooo much. it has a shitton of useless features, yet when we need
-# previewing binary files (#800) devs answer "I'd rather not implement this.
-# It's easy to write a wrapper script that would do this."
-# so it just gives you a useless <BINARY> and thats it
-# at this point, i'd better write my own terminal code highlighter...
-bat() {
-    # so here, if we invoke bat simply with 1 argument that is a file,
-    # we check its encoding and invoke hxl instead if it was binary
-    # ofc it doesn't support piping, but thats not critical (as i never pipe to bat)
-    if [[ $# = 1 ]] &&
-       [[ ! $1 = -* ]] &&
-       [[ -r $1 ]] &&
-       [[ -f $1 ]] &&
-       [[ "$(file --mime-encoding "$1")" = *binary ]]; then
-        hxl "$1"
-    else
-        BAT_STYLE=header,grid command bat "$@"
-    fi
 }
 
 git() {
     case "$1" in
     clone|fetch) gix "$@";;
     # git diff has scrolling with mouse/touch disabled, so i piped it into bat...
-    diff) command git "$@" | command bat --language=diff;;
+    diff) command git "$@" | bat --language=diff --style=plain;;
     # actually almost every git cmd...
-    log) command git "$@" | command bat --language=gitlog;;
+    log) command git "$@" | bat --language=gitlog --style=plain;;
     *) command git "$@";;
     esac
 }
 
 # pipe it to bat to add magic syntax highlighting™
 man() {
-    command man "$@" | col -b | command bat --language=man -
+    command man "$@" | col -bx | bat --language=man --style=plain -
 }
 
 sudo() {
