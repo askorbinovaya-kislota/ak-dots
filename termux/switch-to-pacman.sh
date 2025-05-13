@@ -2,25 +2,6 @@
 set -eo pipefail
 
 ### functions
-# https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
-get-latest-release() {
-    curl --silent "https://api.github.com/repos/$1/releases/latest" |
-    grep '"tag_name":' |
-    sed -E 's/.*"([^"]+)".*/\1/'
-}
-
-arch() {
-    local arch
-    case "$(uname -m)" in
-        armv7l|armv8l) arch="arm";;
-        aarch64) arch="aarch64";;
-        i686) arch="i686";;
-        x86_64) arch="x86_64";;
-        *) die "architecture not supported: $(uname -m)";;
-    esac
-    echo "$arch"
-}
-
 die() {
     echo "$@"
     exit 1
@@ -74,27 +55,29 @@ print
 print -n "continue? [Y/n] "
 confirm || exit
 
-### step 1: getting the url
-REPO="termux-pacman/termux-packages"
-RELEASE="$(get-latest-release $REPO)" || die "could not get latest release"
-BOOTSTRAP="bootstrap-$(arch).zip"
-URL="https://github.com/$REPO/releases/download/$RELEASE/$BOOTSTRAP"
+### step 1: get arch
+arch="$(uname -m)"
+case "$arch" in
+    armv7l|armv8l) arch="arm";;
+    aarch64|i686|x86_64) ;;
+    *) die "architecture not supported: $arch";;
+esac
 
 ### start inside usr-n
 mkdir "usr-n"
 cd "usr-n"
 
-### step 2: downloading
+### step 2: download
 echo
 echo "Downloading latest termux-pacman bootstrap..."
-curl -L -o "$BOOTSTRAP" "$URL"
+curl -LO "https://github.com/termux-pacman/termux-packages/releases/latest/download/bootstrap-$arch.zip"
 
-### step 3: unpacking
-echo "Extracting $BOOTSTRAP..."
-unzip -q "$BOOTSTRAP"
-rm "$BOOTSTRAP"
+### step 3: unpack
+echo "Extracting bootstrap-$arch.zip..."
+unzip -q "bootstrap-$arch.zip"
+rm "bootstrap-$arch.zip"
 
-### step 4: restoring symlinks
+### step 4: restore symlinks
 echo "Restoring symlinks (it may take a while)..."
 while IFS=← read -a arr; do
     # zip supports symlinks, why is this thing used???
@@ -102,7 +85,7 @@ while IFS=← read -a arr; do
 done <SYMLINKS.txt
 rm "SYMLINKS.txt"
 
-### step 5: replacing prefix
+### step 5: replace prefix
 cd ..
 PATH=/system/bin
 mv -v "usr" "usr.bak"
