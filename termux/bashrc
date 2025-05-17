@@ -202,6 +202,10 @@ man() {
 }
 
 sudo() {
+    if [[ $# = 0 ]]; then
+        echo "Usage: sudo <command>"
+        return 1
+    fi
     su -c "export PATH='$PATH:/debug_ramdisk:/system/bin:/system/xbin';" "export HOME='$HOME/.suroot';" "$@"
 }
 
