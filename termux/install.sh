@@ -71,9 +71,11 @@ mkdir -pv ~/.config/nano
 cp -v nanorc ~/.config/nano/nanorc
 
 mkdir -pv ~/.termux
-cp -v dark-tea-lighter.properties ~/.termux/colors.properties
+cp -v themes/dark-tea-lighter.properties ~/.termux/dark.properties
+cp -v themes/light-tea.properties ~/.termux/light.properties
+ln -sfv dark.properties ~/.termux/colors.properties
 cp -v mononoki-nerd.ttf ~/.termux/font.ttf
-ln -sf $PREFIX/etc/motd.sh ~/.termux/motd.sh
+ln -sfv $PREFIX/etc/motd.sh ~/.termux/motd.sh
 cp -v termux.properties ~/.termux/termux.properties
 
 mkdir -pv ~/.local/bin
