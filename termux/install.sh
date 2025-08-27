@@ -80,6 +80,9 @@ cp -v termux.properties ~/.termux/termux.properties
 
 mkdir -pv ~/.local/bin
 cp -v py ~/.local/bin/py
+# I like when packages break on their own and nobody fixes them for months
+ln -sfv $PREFIX/bin/netcat-openbsd ~/.local/bin/nc
+cp -v trs ~/.local/bin/trs
 
 if [[ $wine = true ]]; then
     cp -av winebin/* ~/.local/bin
@@ -88,7 +91,7 @@ fi
 termux-reload-settings
 
 ### additional packages
-pkgs="eza htop fastfetch miniserve xxd bat gitoxide wget file p7zip 7zip"
+pkgs="eza htop fastfetch miniserve xxd bat gitoxide wget file p7zip 7zip netcat-openbsd"
 print
 print "Would you like to install additional packages used in these dotfiles?"
 print "Those are not hard dependency, but are referenced in these dotfiles."

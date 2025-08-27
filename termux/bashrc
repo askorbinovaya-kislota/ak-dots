@@ -81,6 +81,7 @@ shopt -s histverify
 # shorthands
 alias c="clear"
 alias cd..="cd .."
+alias q="exit"
 alias ms="miniserve"
 
 # stop wget from creating .wget-hsts file
@@ -102,6 +103,7 @@ alias diff="diff --color=auto"
 alias cp="cp -v"
 alias mv="mv -v"
 alias mkdir="mkdir -v"
+alias ln="ln -v"
 alias rm="rm -v"
 alias rmdir="rmdir -v"
 
@@ -110,6 +112,8 @@ alias sl="ls"
 alias s="ls"
 alias ld="ls"
 alias cx="cd"
+alias cta="cat"
+alias nnao="nano"
 
 # ls -> eza
 if command -v eza >/dev/null; then
@@ -128,6 +132,7 @@ fi
 
 # polyfills
 command -v which >/dev/null || alias which="type -P"
+# by the way, it is actually better than ripgrep!
 command -v rg >/dev/null || alias rg="grep -R"
 alias neofetch="fastfetch"
 #alias vi="nano"
@@ -242,4 +247,19 @@ pmcd() {
 # greps pm package
 pmgrep() {
     pm list package | sed -n "/$1/{s/package://;p}"
+}
+
+# very thin ldd wrapper
+ldd() {
+    /system/bin/linker64 --list $(realpath "$@")
+}
+
+lightswitch() {
+    case "$(readlink ~/.termux/colors.properties)" in
+        dark*) echo "Light up this night"
+        \ln -sf light.properties ~/.termux/colors.properties;;
+        light*) echo "Embrace the darkness"
+        \ln -sf dark.properties ~/.termux/colors.properties;;
+    esac
+    trs
 }

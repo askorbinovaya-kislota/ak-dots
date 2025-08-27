@@ -4,10 +4,10 @@ set smarthome
 set softwrap
 set zap
 
-set titlecolor #000,cyan
-set selectedcolor #000,cyan
+set titlecolor #000,lightcyan
+set selectedcolor #000,lightcyan
 set spotlightcolor black,lightyellow
-set statuscolor #000,cyan
+set statuscolor #000,lightcyan
 set numbercolor cyan
 set stripecolor ,#444
 set scrollercolor cyan
