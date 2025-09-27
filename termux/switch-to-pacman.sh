@@ -13,7 +13,7 @@ confirm() {
     fi
 
     local answer
-    read answer
+    read answer </dev/tty
     [[ $answer =~ ^[Yy] ]] || [[ -z $answer ]]
 }
 
@@ -22,6 +22,11 @@ print() {
         echo "$@"
     fi
 }
+
+cleanup() {
+    rm -r usr-n
+}
+trap cleanup INT
 
 ### parsing args
 for arg in "$@"; do
@@ -36,8 +41,6 @@ done
 cd "$PREFIX/.."
 if [[ -d "usr.bak" ]]; then
     die "prefix backup (usr.bak) exists. please examine it, rename it to something or wipe it"
-elif [[ -d "usr-n" ]]; then
-    die "destination directory (usr-n) exists. cd ..; rm -r usr-n"
 fi
 
 ### the warning
