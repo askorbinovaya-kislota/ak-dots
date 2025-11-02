@@ -133,7 +133,7 @@ fi
 # polyfills
 command -v which >/dev/null || alias which="type -P"
 # by the way, it is actually better than ripgrep!
-command -v rg >/dev/null || alias rg="grep -R"
+command -v rg >/dev/null || alias rg="grep -r"
 alias neofetch="fastfetch"
 #alias vi="nano"
 
@@ -143,6 +143,8 @@ alias neofetch="fastfetch"
 
 # shorthands
 alias tp="termux-open"
+alias tcs="termux-clipboard-set"
+alias tms="termux-media-scan"
 alias sd="cd $s"
 alias sd..="cd $s/.."
 alias gr="exec grun --shell"
@@ -150,6 +152,7 @@ alias gr="exec grun --shell"
 # «services» (i start those by opening a new tab)
 alias tx="exec termux-x11"
 alias pa="exec pulseaudio --exit-idle-time=-1"
+alias pax="pulseaudio --exit-idle-time=-1 --load=module-native-protocol-tcp"
 
 ###################
 # functions, common
